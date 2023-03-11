@@ -23,10 +23,33 @@ namespace ConsoleUI
             //{
             //    Console.WriteLine(c.CarName+" "+c.Description + " " +c.BrandId);
             //}
-            foreach (var c in carManager.GetCarDetails().Data)
+            //foreach (var c in carManager.GetCarDetails().Data)
+            //{
+            //    Console.WriteLine(c.CarName + " " + c.BrandName + " " + c.ColorName + " " +c.DailyPrice);
+            //}
+
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+
+
+            var result = rentalManager.Add(new Rental
             {
-                Console.WriteLine(c.CarName + " " + c.BrandName + " " + c.ColorName + " " +c.DailyPrice);
-            }
+                CarId = 4,
+                CustomerId = 7,
+                RentDate = new DateTime(2012, 10, 10)
+
+            });
+
+            Console.WriteLine(result.Messages);
+
+
+            //foreach (var item in rentalManager.GetAll().Data)
+            //{
+            //    Console.WriteLine(item.CarId+" "+item.ReturnDate);
+            //}
+
+
+
+
         }
     }
 }

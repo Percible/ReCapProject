@@ -9,6 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
+using FluentValidation;
+using Core.Utilities.Results;
+
 namespace Business.Concrete
 {
     public class CarManager : ICarService
@@ -18,17 +24,15 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
+
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if (car.Description.Length <= 2 || car.DailyPrice <= 0)
-            {
-                return new ErrorResult(Messages.CarNotAdded);
-            }
-            else
-            {
-                _carDal.Add(car);
-                return new ErrorResult(Messages.CarAdded);
-            }
+            
+
+            _carDal.Add(car);
+            return new SuccessResult(Messages.CarAdded);
+
         }
         public IResult Delete(Car car)
         {
@@ -37,7 +41,12 @@ namespace Business.Concrete
         }
         public IDataResult<List<Car>> GetAll()
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.CarListed);
+            if (DateTime.Now.Hour == 21)
+            {
+                return new ErrorDataResult<List<Car>>("Sistem Bakımda");
+            }
+
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
         }
         public IDataResult<Car> GetById(int id)
         {
@@ -58,7 +67,7 @@ namespace Business.Concrete
         public IResult Update(Car car)
         {
             _carDal.Update(car);
-            return new ErrorResult(Messages.CarUpdated);
+            return new SuccessResult(Messages.CarUpdated);
         }
     }
 }

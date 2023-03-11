@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Utilities
+namespace Core.Utilities.Results
 {
     public class Result : IResult
     {
 
 
-        public Result(string messages,bool isSuccess):this(isSuccess)
+        public Result(string messages, bool isSuccess) : this(isSuccess)
         {
-            this.Messages = messages;
-            
+            Messages = messages;
+
         }
 
         public Result(bool isSuccess)
         {
-            this.IsSuccess = isSuccess;
+            IsSuccess = isSuccess;
         }
 
 
